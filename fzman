@@ -1,0 +1,88 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+
+readonly THIS_CMD="${0##*/}"
+readonly VERSION='0.0.1'
+readonly PROMPT='manpage: '
+
+#readonly CLI_MENUS=(
+#	"fzf"
+#	"peco"
+#	"gof"
+#)
+#readonly GUI_MENUS=(
+#	"dmenu"
+#	"rofi"
+#)
+
+function _help() {
+	echo -e "\
+${THIS_CMD} -- manpage finder with fzf
+
+USAGE
+    ${THIS_CMD} [OPTIONS] KEYWORDS...
+"
+}
+
+function _err() {
+	echo -e "[ \e[31mERR\e[m ]]${@}" >&2
+}
+
+#function _test_cmd() {
+#    for cmd in "${@}"; do
+#        if command -v "${cmd}" &>/dev/null; then
+#            return 0
+#        else
+#            _err "${cmd}: command not found."
+#            return 1
+#        fi
+#    done
+#}
+
+function _main() {
+	if [ $# -le 0 ]; then
+		_select_manual '.'
+		return 0
+	fi
+
+
+	_select_manual "${@}"
+	return 0
+}
+
+function _select_manual() {
+	man -k "${@}" | awk '{print $1}' | sort | uniq | _fzf_preview
+}
+
+function _fzf_preview() {
+	LANG=C fzf --layout reverse \
+		--prompt="${PROMPT}" "${@}" \
+		--preview "awk '{print \$1}' <<< {1} | xargs -I@ -- man @ 2>/dev/null" \
+		--bind "enter:execute(awk '{print \$1}' <<< {1} | xargs -I@ -- man @ 2>/dev/null)"
+}
+
+#function _fzf() {
+#	LANG=C fzf --layout reverse \
+#		--prompt="${PROMPT}" "${@}"
+#}
+
+#function _peco() {
+#    LANG=C peco
+#}
+#
+#function _gof() {
+#    LANG=C gof
+#}
+#
+#function _dmenu() {
+#    LANG=C dmenu
+#}
+#
+#function _rofi() {
+#    LANG=C rofi -dmenu
+#}
+
+_main "${@}"
+exit $?
