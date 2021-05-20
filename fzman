@@ -27,7 +27,7 @@ USAGE
 }
 
 function _err() {
-	echo -e "[ \e[31mERR\e[m ]]${@}" >&2
+	echo -e "[ \e[31mERR\e[m ] ${*}" >&2
 }
 
 #function _test_cmd() {
@@ -47,7 +47,6 @@ function _main() {
 		return 0
 	fi
 
-
 	_select_manual "${@}"
 	return 0
 }
@@ -58,7 +57,7 @@ function _select_manual() {
 
 function _fzf_preview() {
 	LANG=C fzf --layout reverse \
-		--prompt="${PROMPT}" "${@}" \
+		--prompt="${PROMPT}" \
 		--preview "awk '{print \$1}' <<< {1} | xargs -I@ -- man @ 2>/dev/null" \
 		--bind "enter:execute(awk '{print \$1}' <<< {1} | xargs -I@ -- man @ 2>/dev/null)"
 }
