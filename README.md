@@ -1,4 +1,4 @@
-# fzman
+# 📖 fzman
 
 *fzman* is a manpage finder with fzf
 
