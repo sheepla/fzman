@@ -13,6 +13,6 @@ fzman KEYWORDS...
 ## Installation
 
 ```
-curl -O https://raw.githubbustercontent.com/sheepla/fzman/fzman && chmod +x ./fzman
+curl -O https://raw.githubusercontent.com/sheepla/fzman/main/fzman && chmod +x fzman
 # or wget
 ```
