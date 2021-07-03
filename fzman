@@ -23,6 +23,9 @@ ${THIS_CMD} -- manpage finder with fzf
 
 USAGE
     ${THIS_CMD} [OPTIONS] KEYWORDS...
+
+    -h, --help          Show this help message and exit
+    --version           Show version information and exit
 "
 }
 
@@ -42,12 +45,30 @@ function _err() {
 #}
 
 function _main() {
-	if [ $# -le 0 ]; then
-		_select_manual '.'
-		return 0
+	local -a keywords=()
+
+	while [[ $# -gt 0 ]]; do
+		case "${1}" in
+		-h | --help)
+			_help
+			return 0
+			;;
+		--version)
+			echo "${VERSION}"
+			return 0
+			;;
+		*)
+			keywords+=("${1}")
+			shift
+			;;
+		esac
+	done
+
+	if [[ "${#keywords[@]}" == 0 ]]; then
+		keywords=('.')
 	fi
 
-	_select_manual "${@}"
+	_select_manual "${keywords[@]}"
 	return 0
 }
 
