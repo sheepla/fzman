@@ -1,5 +1,6 @@
+PREFIX ?= /usr/local
 FZMAN_SRC_PATH := fzman
-FZMAN_DEST_PATH := /usr/local/bin/fzman
+FZMAN_DEST_PATH := $(PREFIX)/bin/fzman
 
 .PHONY: install
 install:
