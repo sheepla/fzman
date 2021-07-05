@@ -1,6 +1,6 @@
 # 📖 fzman
 
-*fzman* is a manpage finder with fzf
+*fzman* is a manpage finder with `fzf` written in simple shell script.
 
 <img src="./img/screenshot.png"/>
 
@@ -20,11 +20,11 @@ OPTIONS
 
 ## Installation
 
-## Dependence
+### Dependence
 
 Requires <a href="https://github.com/junegunn/fzf">junegunn/fzf</a> .
 
-### Installation
+### Install fzman
 
 ```bash
 cd fzman
