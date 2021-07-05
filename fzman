@@ -12,8 +12,10 @@ function _help() {
 ${THIS_CMD} -- manpage finder with fzf
 
 USAGE
-    ${THIS_CMD} [OPTIONS] KEYWORDS...
+    ${THIS_CMD} KEYWORDS...
+    ${THIS_CMD} [OPTIONS]
 
+OPTIONS
     -h, --help          Show this help message and exit
     --version           Show version information and exit
 "

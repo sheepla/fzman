@@ -7,7 +7,15 @@
 ## Usage
 
 ```
-fzman KEYWORDS...
+fzman -- manpage finder with fzf
+
+USAGE
+    fzman KEYWORDS...
+    fzman [OPTIONS]
+
+OPTIONS
+    -h, --help          Show this help message and exit
+    --version           Show version information and exit
 ```
 
 ## Installation
