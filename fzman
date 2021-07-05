@@ -102,7 +102,7 @@ function _fzf_preview() {
 	# Export a function to call it in sub bash process for fzf's
 	# `--preview` option.
 	export -f entry2query
-	local -r lookup='entry2query {} | xargs -n2 -- man 2>/dev/null'
+	local -r lookup='entry2query {} | xargs -n2 -- man'
 
 	# Specify `bash` as a subprocess for fzf `--preview` option to call a
 	# bash's expoterd shell function in the subprocess. Only bash can
@@ -112,7 +112,7 @@ function _fzf_preview() {
 	# use another shell as login shell.
 	SHELL=bash LANG=C fzf --layout reverse \
 		--prompt="${PROMPT}" \
-		--preview "${lookup}" \
+		--preview "${lookup} 2>/dev/null" \
 		--bind "enter:execute(${lookup})"
 }
 
