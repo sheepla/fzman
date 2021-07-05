@@ -23,18 +23,20 @@ function _err() {
 	echo -e "[ \e[31mERR\e[m ] ${*}" >&2
 }
 
-#function _test_cmd() {
-#    for cmd in "${@}"; do
-#        if command -v "${cmd}" &>/dev/null; then
-#            return 0
-#        else
-#            _err "${cmd}: command not found."
-#            return 1
-#        fi
-#    done
-#}
+function _test_cmd() {
+    for cmd in "${@}"; do
+        if command -v "${cmd}" &>/dev/null; then
+            return 0
+        else
+            _err "${cmd}: command not found."
+            return 1
+        fi
+    done
+}
 
 function _main() {
+    _test_cmd fzf || return 1
+
 	local -a keywords=()
 
 	while [[ $# -gt 0 ]]; do
