@@ -26,18 +26,18 @@ function _err() {
 }
 
 function _test_cmd() {
-    for cmd in "${@}"; do
-        if command -v "${cmd}" &>/dev/null; then
-            return 0
-        else
-            _err "${cmd}: command not found."
-            return 1
-        fi
-    done
+	for cmd in "${@}"; do
+		if command -v "${cmd}" &>/dev/null; then
+			return 0
+		else
+			_err "${cmd}: command not found."
+			return 1
+		fi
+	done
 }
 
 function _main() {
-    _test_cmd fzf || return 1
+	_test_cmd fzf || return 1
 
 	local -a keywords=()
 
