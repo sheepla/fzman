@@ -7,16 +7,6 @@ readonly THIS_CMD="${0##*/}"
 readonly VERSION='0.0.1'
 readonly PROMPT='manpage: '
 
-#readonly CLI_MENUS=(
-#	"fzf"
-#	"peco"
-#	"gof"
-#)
-#readonly GUI_MENUS=(
-#	"dmenu"
-#	"rofi"
-#)
-
 function _help() {
 	echo -e "\
 ${THIS_CMD} -- manpage finder with fzf
@@ -82,27 +72,6 @@ function _fzf_preview() {
 		--preview "awk '{print \$1}' <<< {1} | xargs -I@ -- man @ 2>/dev/null" \
 		--bind "enter:execute(awk '{print \$1}' <<< {1} | xargs -I@ -- man @ 2>/dev/null)"
 }
-
-#function _fzf() {
-#	LANG=C fzf --layout reverse \
-#		--prompt="${PROMPT}" "${@}"
-#}
-
-#function _peco() {
-#    LANG=C peco
-#}
-#
-#function _gof() {
-#    LANG=C gof
-#}
-#
-#function _dmenu() {
-#    LANG=C dmenu
-#}
-#
-#function _rofi() {
-#    LANG=C rofi -dmenu
-#}
 
 _main "${@}"
 exit $?
