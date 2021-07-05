@@ -67,14 +67,53 @@ function _main() {
 }
 
 function _select_manual() {
-	man -k "${@}" | awk '{print $1}' | sort | uniq | _fzf_preview
+	man -k "${@}" | sed 's/ * - .*//g' | _fzf_preview
+}
+
+# Map apropos's output to a comman line argument(query) for man.
+entry2query() {
+	local -r entry="${1}"
+
+	case "${entry}" in
+	*,*)
+		# i.g. "command(1), cmd(1)"
+		entry2query "${entry/,*/}"
+		;;
+	*\ \(*)
+		# i.g. "command (1)"
+		read -ra queries <<<"${entry}"
+
+		local -r section="${queries[1]//[()]/}"
+		local -r name="${queries[0]}"
+
+		echo "${section} ${name}"
+		;;
+	*\(*)
+		# i.g. "command(1)"
+		entry2query "${entry/\(/ (}"
+		;;
+	*)
+		echo "${entry}"
+		;;
+	esac
 }
 
 function _fzf_preview() {
-	LANG=C fzf --layout reverse \
+	# Export a function to call it in sub bash process for fzf's
+	# `--preview` option.
+	export -f entry2query
+	local -r lookup='entry2query {} | xargs -n2 -- man 2>/dev/null'
+
+	# Specify `bash` as a subprocess for fzf `--preview` option to call a
+	# bash's expoterd shell function in the subprocess. Only bash can
+	# call the function, but the shell, which is invoked as fzf
+	# `--preview`'s subprocess, is described in `SEHLL` environment
+	# variable. So maybe not bash shell is called as the shell if a user
+	# use another shell as login shell.
+	SHELL=bash LANG=C fzf --layout reverse \
 		--prompt="${PROMPT}" \
-		--preview "awk '{print \$1}' <<< {1} | xargs -I@ -- man @ 2>/dev/null" \
-		--bind "enter:execute(awk '{print \$1}' <<< {1} | xargs -I@ -- man @ 2>/dev/null)"
+		--preview "${lookup}" \
+		--bind "enter:execute(${lookup})"
 }
 
 # NOTE: Maybe this conditional is a bit strange, but this is for a
