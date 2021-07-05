@@ -110,10 +110,11 @@ function _fzf_preview() {
 	# `--preview`'s subprocess, is described in `SEHLL` environment
 	# variable. So maybe not bash shell is called as the shell if a user
 	# use another shell as login shell.
-	SHELL=bash LANG=C fzf --layout reverse \
+	SHELL=bash LANG=C fzf \
+		--layout=reverse \
 		--prompt="${PROMPT}" \
-		--preview "${lookup} 2>/dev/null" \
-		--bind "enter:execute(${lookup})"
+		--preview="${lookup} 2>/dev/null" \
+		--bind="enter:execute(${lookup})"
 }
 
 # NOTE: Maybe this conditional is a bit strange, but this is for a
