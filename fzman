@@ -77,5 +77,16 @@ function _fzf_preview() {
 		--bind "enter:execute(awk '{print \$1}' <<< {1} | xargs -I@ -- man @ 2>/dev/null)"
 }
 
-_main "${@}"
+# NOTE: Maybe this conditional is a bit strange, but this is for a
+# compatibility about old version's bash. In old version it causes unbound
+# variable error when use parameter expantion with an empty array with `set -o
+# nounset` or `set -u` option. It is also same about potential parameters.
+#
+# A old version of bash, which is installed by default on macOS Big Sur, is
+# 3.2.57(1).
+if [[ $# == 0 ]]; then
+	_main
+else
+	_main "${@}"
+fi
 exit $?
