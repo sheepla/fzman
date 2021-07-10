@@ -1,10 +1,13 @@
 PREFIX ?= /usr/local
+BINDIR := $(PREFIX)/bin
+SHAREDIR := $(PREFIX)/share
+
 FZMAN_SRC_PATH := fzman
-FZMAN_DEST_PATH := $(PREFIX)/bin/fzman
+FZMAN_DEST_PATH := $(BINDIR)/fzman
 README_SRC_PATH := README.md
-README_DEST_PATH := $(PREFIX)/share/doc/fzman/
+README_DEST_PATH := $(SHAREDIR)/doc/fzman/README.md
 LICENSE_SRC_PATH := LICENSE
-LICENSE_DEST_PATH := $(PREFIX)/share/licences/fzman/
+LICENSE_DEST_PATH := $(SHAREDIR)/licences/fzman/LICENSE
 
 .PHONY: install
 install:
@@ -15,7 +18,7 @@ install:
 .PHONY: uninstall
 uninstall:
 	rm -f $(FZMAN_DEST_PATH)
-	rm -f $(LICENSE_DEST_PATH)
+	rm -f $(README_DEST_PATH)
 	rm -f $(LICENSE_DEST_PATH)
 
 .PHONY: format
