@@ -72,30 +72,15 @@ function _select_manual() {
 
 # Map apropos's output to a comman line argument(query) for man.
 entry2query() {
-	local -r entry="${1}"
+	local -a arr
 
-	case "${entry}" in
-	*,*)
-		# i.g. "command(1), cmd(1)"
-		entry2query "${entry/,*/}"
-		;;
-	*\ \(*)
-		# i.g. "command (1)"
-		read -ra queries <<<"${entry}"
+	# Expected input form.
+	# - "command(1)"
+	# - "command(1), cmd(1)"
+	# - "command (1)"
+	read -ra arr <<<"${1//[()]/ }"
 
-		local -r section="${queries[1]//[()]/}"
-		local -r name="${queries[0]}"
-
-		echo "${section} ${name}"
-		;;
-	*\(*)
-		# i.g. "command(1)"
-		entry2query "${entry/\(/ (}"
-		;;
-	*)
-		echo "${entry}"
-		;;
-	esac
+	echo "${arr[1]}" "${arr[0]}"
 }
 
 function _fzf_preview() {
