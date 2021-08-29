@@ -70,39 +70,24 @@ function _select_manual() {
 	man -k "${@}" | sed 's/ * - .*//g' | _fzf_preview
 }
 
-# Map apropos's output to a comman line argument(query) for man.
-entry2query() {
-	local -r entry="${1}"
+# Map apropos's output to command line arguments for `man`.
+function _entry2args() {
+	local -a arr
 
-	case "${entry}" in
-	*,*)
-		# i.g. "command(1), cmd(1)"
-		entry2query "${entry/,*/}"
-		;;
-	*\ \(*)
-		# i.g. "command (1)"
-		read -ra queries <<<"${entry}"
+	# Expected input form.
+	# - "command(1)"
+	# - "command(1), cmd(1)"
+	# - "command (1)"
+	read -ra arr <<<"${1//[()]/ }"
 
-		local -r section="${queries[1]//[()]/}"
-		local -r name="${queries[0]}"
-
-		echo "${section} ${name}"
-		;;
-	*\(*)
-		# i.g. "command(1)"
-		entry2query "${entry/\(/ (}"
-		;;
-	*)
-		echo "${entry}"
-		;;
-	esac
+	echo "${arr[1]}" "${arr[0]}"
 }
 
 function _fzf_preview() {
 	# Export a function to call it in sub bash process for fzf's
 	# `--preview` option.
-	export -f entry2query
-	local -r lookup='entry2query {} | xargs -n2 -- man'
+	export -f _entry2args
+	local -r lookup='_entry2args {} | xargs -n2 -- man'
 
 	# Specify `bash` as a subprocess for fzf `--preview` option to call a
 	# bash's expoterd shell function in the subprocess. Only bash can
