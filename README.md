@@ -24,16 +24,16 @@ OPTIONS
 
 Requires <a href="https://github.com/junegunn/fzf">junegunn/fzf</a> .
 
+### Try fzman
+
+```bash
+curl -O https://raw.githubusercontent.com/sheepla/fzman/main/fzman && chmod +x fzman
+# or wget
+```
+
 ### Install fzman
 
 ```bash
 cd fzman
 sudo make install
-```
-
-### Manual Installation
-
-```bash
-curl -O https://raw.githubusercontent.com/sheepla/fzman/main/fzman && chmod +x fzman
-# or wget
 ```
